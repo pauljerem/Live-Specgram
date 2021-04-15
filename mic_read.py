@@ -15,10 +15,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-RATE = 16_000  # sample rate
+RATE = 44_100  # sample rate
 FORMAT = pyaudio.paInt16  # conversion format for PyAudio stream
 CHANNELS = 1  # microphone audio channels
-CHUNK_SIZE = 8_192  # number of samples to take per read
+CHUNK_SIZE = 2**15  # number of samples to take per read
 SAMPLE_LENGTH = int(CHUNK_SIZE*1_000/RATE)  # length of each sample in ms
 
 
@@ -30,6 +30,7 @@ def open_mic() -> Tuple[pyaudio.Stream, pyaudio.PyAudio]:
     """
     pa = pyaudio.PyAudio()
     stream = pa.open(input=True,
+		     input_device_index=11,
                      format=FORMAT,
                      channels=CHANNELS,
                      rate=RATE,
@@ -43,7 +44,7 @@ def get_data(stream: pyaudio.Stream) -> np.ndarray:
     inputs: stream, PyAudio object
     outputs: int16 data array
     """
-    input_data = stream.read(CHUNK_SIZE)
+    input_data = stream.read(CHUNK_SIZE, exception_on_overflow = False)
     data = np.frombuffer(input_data, np.int16)
     return data
 
