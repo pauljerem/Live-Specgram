@@ -21,7 +21,7 @@ from typing import Tuple
 
 from mic_read import SAMPLE_LENGTH, RATE, get_data, open_mic
 
-SAMPLES_PER_FRAME = 4  # Number of mic reads concatenated within a single window
+SAMPLES_PER_FRAME = 2  # Number of mic reads concatenated within a single window
 N_FFT = 1_024  # NFFT value for spectrogram
 OVERLAP = 1_000  # overlap value for spectrogram
 
